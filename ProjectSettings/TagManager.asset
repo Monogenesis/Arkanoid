@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - SideWall
+  - Paddle
+  - DeadZone
+  - TopWall
+  - Block
+  - PowerUpSize
   layers:
   - Default
   - TransparentFX
