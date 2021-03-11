@@ -11,7 +11,8 @@ public class BallMovement : MonoBehaviour
     public float maxZ = 8;
     private Vector3 velocity;
     public Transform playField;
-    private Vector3 startPosition;
+    public static Vector3 startPosition;
+ 
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class BallMovement : MonoBehaviour
     }
     private void Start()
     {
-
+        if(startPosition == null)
         startPosition = transform.position;
         velocity = new Vector3(0, 0, -maxX);
     }
@@ -87,13 +88,14 @@ public class BallMovement : MonoBehaviour
             if (allActiveBalls.Count <= 0)
             {
                 Controller.GameController.Lives--;
+                     Instantiate(ballPrefab, startPosition, Quaternion.identity);
             }
-            Instantiate(ballPrefab, startPosition, Quaternion.identity);
+           
             Destroy(gameObject);
             //transform.position = startPosition;
             //velocity = new Vector3(0, 0, -maxX);
         }
-        //GetComponent<AudioSource>().Play();
+        GetComponent<AudioSource>().Play();
     }
 
 

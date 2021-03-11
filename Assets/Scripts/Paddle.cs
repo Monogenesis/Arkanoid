@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
+    public GameObject ballPrefab;
     public float speed = 10;
     public Transform playField;
     public float maxXScale = 7.0f;
     private float minXScale;
-
     public float paddleSizeTime;
 
     private void Start()
@@ -42,11 +42,22 @@ public class Paddle : MonoBehaviour
         paddleSizeTime = 10.0f;
     }
 
+    private void triggerMultiBall()
+    {
+        Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y, transform.position.z + transform.localScale.z * 0.5f);
+        Instantiate(ballPrefab, spawnPos, Quaternion.identity);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PowerUpSize"))
         {
             paddleSizeBoost();
+            Destroy(other.gameObject);
+        }
+        if (other.CompareTag("PowerUpMultiball"))
+        {
+            triggerMultiBall();
             Destroy(other.gameObject);
         }
     }

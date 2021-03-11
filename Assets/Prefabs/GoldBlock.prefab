@@ -108,6 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   increaseSizePowerUp: {fileID: 2754206358558009106, guid: 990e8aa3a71c078459ff0ae51b1a5122,
     type: 3}
+  multiBallPowerUp: {fileID: 2291400067834245988, guid: c160315a15839d74b86e8f14ac5889c4,
+    type: 3}
   hitpoints: 4
   value: 50
   green: {r: 0.11012435, g: 1, b: 0, a: 0}

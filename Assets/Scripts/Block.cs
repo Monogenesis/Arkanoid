@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    public static ArrayList allActiveBlocks = new ArrayList();
     public GameObject increaseSizePowerUp;
+    public GameObject multiBallPowerUp;
     public int hitpoints;
     public int value = 50;
     public Color green;
@@ -16,6 +18,7 @@ public class Block : MonoBehaviour
 
     private void Start()
     {
+        allActiveBlocks.Add(this);
         scaleFactor = 0;
         startScale = transform.localScale;
         updateColor();
@@ -33,11 +36,15 @@ public class Block : MonoBehaviour
         hitpoints--;
         if(hitpoints <= 0)
         {
+            allActiveBlocks.Remove(this);
             Controller.GameController.addScore(value);
             int drop = Random.Range(0, 10);
-            if (drop >= 7)
+            if (drop >= 8)
             {
                 Instantiate(increaseSizePowerUp, transform.position, Quaternion.identity);
+            }else if(drop <8 && drop >= 6)
+            {
+                Instantiate(multiBallPowerUp, transform.position, Quaternion.identity);
             }
         }
         updateColor();

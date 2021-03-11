@@ -10,6 +10,7 @@ TagManager:
   - TopWall
   - Block
   - PowerUpSize
+  - PowerUpMultiball
   layers:
   - Default
   - TransparentFX
