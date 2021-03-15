@@ -51,10 +51,16 @@ public class Controller : MonoBehaviour
         get { return lives; }
         set { lives = value;
             liveText.text = "Lives: " + Lives;
-            if(lives <= 0)
+            Time.timeScale = 0;
+            
+            if (lives <= 0)
             {
                 gameOverObject.SetActive(true);
                 Time.timeScale = 0;
+            }
+            else
+            {
+                startText.SetActive(true);
             }
         }
     }
@@ -74,6 +80,7 @@ public class Controller : MonoBehaviour
         Block.allActiveBlocks.Clear();
         gameOverObject.SetActive(false);
         Score = 0;
+        scoreText.text = "Score: " + Score;
         Lives = 3;
         paddle.transform.position = new Vector3(0, 0.5f, -8);
         Time.timeScale = 0;
@@ -81,13 +88,16 @@ public class Controller : MonoBehaviour
         loadBlocks();
     }
 
+
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.timeScale == 0)
+        if (Input.GetKeyDown(KeyCode.Space) && startText.activeSelf)
         {
             startText.SetActive(false);
             Time.timeScale = 1;
         }
+ 
     }
 
     private void loadBlocks()
@@ -95,7 +105,7 @@ public class Controller : MonoBehaviour
         foreach(Transform block in previewGrid.GetComponentInChildren<Transform>())
         {
            GameObject newBlock = Instantiate(blockPrefab, block.position, Quaternion.identity);
-            newBlock.GetComponent<Block>().hitpoints = Random.Range(1, 5);
+            newBlock.GetComponent<Block>().hitpoints = Random.Range(1, 4);
         }
     }
     public void exitApplication()

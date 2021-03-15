@@ -10,7 +10,7 @@ public class Paddle : MonoBehaviour
     public float maxXScale = 7.0f;
     private float minXScale;
     public float paddleSizeTime;
-
+    public GameObject portalPrefab;
     private void Start()
     {
         minXScale = transform.localScale.x;
@@ -48,6 +48,13 @@ public class Paddle : MonoBehaviour
         Instantiate(ballPrefab, spawnPos, Quaternion.identity);
     }
 
+    public void createPortal(GameObject target)
+    {
+        
+        Instantiate(portalPrefab, new Vector3(target.transform.position.x, 1.2f, target.transform.position.z), Quaternion.identity);
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PowerUpSize"))
@@ -58,6 +65,12 @@ public class Paddle : MonoBehaviour
         if (other.CompareTag("PowerUpMultiball"))
         {
             triggerMultiBall();
+            Destroy(other.gameObject);
+        }
+        if (other.CompareTag("PowerUpPortal"))
+        {
+            Debug.Log("Portal hit");
+            createPortal(other.gameObject);
             Destroy(other.gameObject);
         }
     }

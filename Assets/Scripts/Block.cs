@@ -7,15 +7,14 @@ public class Block : MonoBehaviour
     public static ArrayList allActiveBlocks = new ArrayList();
     public GameObject increaseSizePowerUp;
     public GameObject multiBallPowerUp;
+    public GameObject powerUpPortalPrefab;
     public int hitpoints;
     public int value = 50;
-    public Color green;
-    public Color red;
-    public Color silver;
-    public Color gold;
+
+    [SerializeField]
+    public  Color[] colors;
     private float scaleFactor;
     private Vector3 startScale;
-
     private void Start()
     {
         allActiveBlocks.Add(this);
@@ -42,9 +41,13 @@ public class Block : MonoBehaviour
             if (drop >= 8)
             {
                 Instantiate(increaseSizePowerUp, transform.position, Quaternion.identity);
-            }else if(drop <8 && drop >= 6)
+            }else if(drop <8 && drop >= 7)
             {
                 Instantiate(multiBallPowerUp, transform.position, Quaternion.identity);
+            }
+            else if (drop < 7 && drop >= 6)
+            {
+                Instantiate(powerUpPortalPrefab, transform.position, Quaternion.identity);
             }
         }
         updateColor();
@@ -60,16 +63,13 @@ public class Block : MonoBehaviour
                 Destroy(gameObject);
                 break;
             case 1:
-                gameObject.GetComponent<Renderer>().material.color = green;
+                gameObject.GetComponent<Renderer>().material.color = colors[0];
                 break;
             case 2:
-                gameObject.GetComponent<Renderer>().material.color = red;
+                gameObject.GetComponent<Renderer>().material.color = colors[1];
                 break;
             case 3:
-                gameObject.GetComponent<Renderer>().material.color = silver;
-                break;
-            case 4:
-                gameObject.GetComponent<Renderer>().material.color = gold;
+                gameObject.GetComponent<Renderer>().material.color = colors[2];
                 break;
             default:
                 Destroy(gameObject);

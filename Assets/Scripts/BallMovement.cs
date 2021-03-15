@@ -12,7 +12,7 @@ public class BallMovement : MonoBehaviour
     private Vector3 velocity;
     public Transform playField;
     public static Vector3 startPosition;
- 
+    private bool blockCollisionActive = true;
 
     private void Awake()
     {
@@ -26,7 +26,10 @@ public class BallMovement : MonoBehaviour
     }
 
 
-   
+    void ResetBlockCollision()
+    {
+        blockCollisionActive = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,40 +41,85 @@ public class BallMovement : MonoBehaviour
 
             velocity = new Vector3(nDist * maxX, velocity.y, -velocity.z);
         }
-        else if (other.CompareTag("Block"))
+        else if (other.CompareTag("Block") && blockCollisionActive)
         {
+            blockCollisionActive = false;
+            Invoke(nameof(ResetBlockCollision), 0.01f);
             Block collidingBlock = other.gameObject.GetComponent<Block>();
             collidingBlock.hitByBall();
 
             float otherWidth = other.transform.localScale.x;
             float otherHeight = other.transform.localScale.z;
 
-            if (transform.position.x < other.transform.position.x - otherWidth * 0.5f || transform.position.x > other.transform.position.x + otherWidth * 0.5f)
-            {
-                if (transform.position.z < other.transform.position.z + otherHeight * 0.5f)
+            bool hitFromAbove = transform.position.z > other.transform.position.z + otherHeight * 0.5f;
+            bool hitFromBeneath = transform.position.z < other.transform.position.z - otherHeight * 0.5f;
+         
+                //Left Side
+                if (transform.position.x < other.transform.position.x - otherWidth * 0.5f)
                 {
-                    // Edge collision
-                    velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    if(hitFromAbove)
+                    {
+                    if (velocity.x >= 0)
+                        velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
+                    }
+                    }
+                    else if (hitFromBeneath)
+                    {
+                    if (velocity.x >= 0)
+                        velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
+                    }
                 }
-                else if (transform.position.z > other.transform.position.z - otherHeight * 0.5f)
+                    else
+                    {
+                        //hit on left side
+                        velocity = new Vector3(-velocity.x, velocity.y, velocity.z);
+                    }
+                }
+                // Right Side
+                else if(transform.position.x > other.transform.position.x + otherWidth * 0.5f)
                 {
-                    // Edge collision
-                    velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    if (hitFromAbove)
+                    {
+                    if (velocity.x < 0)
+                        velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
+                    }
+                }
+                    else if (hitFromBeneath)
+                    {
+                    if (velocity.x < 0)
+                        velocity = new Vector3(-velocity.x, velocity.y, -velocity.z);
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
+                    }
                 }
                 else
                 {
-                    // Side collision
+                        //hit on left side
+                        velocity = new Vector3(-velocity.x, velocity.y, velocity.z);
+                    }
+                }
+                // Top or Bottom Side
+                else
+                {
                     velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
                 }
             }
-            else
-            {
-                // The rest must be bottom and top side collsion ????
-                velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
-            }
+        
+
+       
             
 
-        }
+        
         else if (other.CompareTag("TopWall"))
         {
             velocity = new Vector3(velocity.x, velocity.y, -velocity.z);
@@ -79,6 +127,15 @@ public class BallMovement : MonoBehaviour
         else if (other.CompareTag("SideWall"))
         {
             velocity = new Vector3(-velocity.x, velocity.y, velocity.z);
+            if(velocity.x >= 0)
+            {
+                transform.position = new Vector3(other.transform.position.x + other.transform.localScale.x * 2.0f, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(other.transform.position.x - other.transform.localScale.x * 2.0f, transform.position.y, transform.position.z);
+            }
+          
         }
         else if (other.CompareTag("DeadZone"))
         {
@@ -94,6 +151,10 @@ public class BallMovement : MonoBehaviour
             Destroy(gameObject);
             //transform.position = startPosition;
             //velocity = new Vector3(0, 0, -maxX);
+        }else if (other.CompareTag("Portal"))
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, other.gameObject.GetComponent<Portal>().zSpawnPos);
+            Destroy(other.gameObject);
         }
         GetComponent<AudioSource>().Play();
     }

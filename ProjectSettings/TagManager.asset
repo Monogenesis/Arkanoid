@@ -11,6 +11,8 @@ TagManager:
   - Block
   - PowerUpSize
   - PowerUpMultiball
+  - Portal
+  - PowerUpPortal
   layers:
   - Default
   - TransparentFX

@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 5958802537135311913}
   maxX: 12
-  maxZ: 6
+  maxZ: 12
   playField: {fileID: 0}
 --- !u!82 &-9050160027898157017
 AudioSource:
