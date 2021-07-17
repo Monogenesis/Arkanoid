@@ -11,6 +11,7 @@ Youtube: https://www.youtube.com/watch?v=UcjLXmJxoCY
 
 - Getting to know Unity
 - Learning C#
+- 
 ## Screenshots
 
 ![Gameplay](https://raw.githubusercontent.com/Monogenesis/Arkanoid/main/screenshots/gameplay.png)
