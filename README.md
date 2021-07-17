@@ -13,6 +13,6 @@ Youtube: https://www.youtube.com/watch?v=UcjLXmJxoCY
 - Learning C#
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Gameplay](https://raw.githubusercontent.com/Monogenesis/Arkanoid/main/screenshots/gameplay.png)
 
   
